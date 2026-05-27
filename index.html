@@ -37,7 +37,7 @@
             align-items: center;
             color: white;
             z-index: 999;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            transition: transform 0.8s ease-in-out;
             padding: 20px;
         }
 
@@ -98,16 +98,26 @@
 
         .btn-buka:hover {
             background-color: #b8952d;
-            transform: scale(1.05);
         }
 
-        /* Bingkai Youtube Tersembunyi (Agar Hanya Suaranya yang Terdengar) */
-        .youtube-audio {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
+        /* Tombol Musik Bulat */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(212, 175, 55, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: none; 
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Konten Utama Undangan */
@@ -116,7 +126,7 @@
             padding: 60px 20px;
             max-width: 500px;
             margin: 0 auto;
-            transition: opacity 1.5s ease-in-out;
+            transition: opacity 1s ease-in-out;
         }
 
         .main-content.show {
@@ -169,7 +179,6 @@
             margin: 5px 0;
         }
 
-        /* Card Acara */
         .card-acara {
             background: rgba(255, 255, 255, 0.95);
             padding: 30px 25px;
@@ -205,10 +214,13 @@
 </head>
 <body>
 
-    <!-- JALUR ANTI-GAGAL: PLAYER YOUTUBE AWADT ALBY YANG DISEMBUNYIKAN -->
-    <div class="youtube-audio">
-        <div id="player"></div>
-    </div>
+    <!-- SERVER UTAMA: LINK AUDIO DRIECT STREAMING VIA HTTPS RESMI -->
+    <audio id="wedding-song" loop preload="auto">
+        <source src="https://pub-c5e31b5cdafb419a9d6df30bc7329dfc.r2.dev/awadt_alby_instrumental.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- TOMBOL MUSIK BULAT -->
+    <button class="music-control" id="audioBtn" onclick="toggleMusic()">🎵</button>
 
     <!-- 1. HALAMAN SAMPUL (COVER) -->
     <div class="cover" id="cover-page">
@@ -217,93 +229,77 @@
         <p>KEPADA YTH.</p>
         <p>Bapak/Ibu/Saudara/i : </p>
         <h3 id="tamu-cover">Nama Teman</h3>
-        <button class="btn-buka" onclick="bukaUndangan()">Buka Undangan</button>
+        <!-- INTERAKSI LANGSUNG SANGAT KUAT -->
+        <button class="btn-buka" id="tombolUtama">Buka Undangan</button>
     </div>
 
     <!-- 2. KONTEN UTAMA -->
     <div class="main-content" id="main-invitation">
-        
         <div class="welcome-msg">
             <h3>Selamat Datang,</h3>
             <p id="nama-tamu">Nama Tamu</p>
         </div>
-
         <p class="pembuka-kata">
             Kabar bahagia! Di antara langkah-langkah hidup yang telah kami lalui, kami memutuskan untuk mengukir cerita baru bersama. Kami sangat berharap kehadiran teman-teman di hari bahagia kami:
         </p>
-            
         <div class="nama-pengantin">Ridham, S.Kom.</div>
         <div class="dan">&</div>
         <div class="nama-pengantin">Nurul Apriliani Saadah</div>
-        
         <hr style="width: 25%; margin: 40px auto; border: 0.5px solid #d4af37;">
-        
         <div class="card-acara">
             <h3>AKAD NIKAH</h3>
             <p><strong>Hari/Tanggal:</strong> Rabu, 3 Juni 2026</p>
             <p><strong>Waktu:</strong> Bakda Asar</p>
             <p><strong>Tempat:</strong> Loang Lindung, Desa Suwangi Timur, Kec Sakra</p>
         </div>
-
         <div class="card-acara">
             <h3>NYONGKOLAN</h3>
             <p><strong>Hari/Tanggal:</strong> Kamis, 4 Juni 2026</p>
             <p><strong>Waktu:</strong> 16.00 WITA - Selesai</p>
             <p><strong>Rute/Tempat:</strong> Loang Lindung ke Gunung Bagek</p>
         </div>
-
         <p class="footer-note">
             "Merupakan suatu kebahagiaan dan kehormatan bagi kami, jika Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu secara langsung."
         </p>
-        
         <p style="margin-top: 30px; font-weight: bold; color: #8c6d31; font-size: 1.1rem;">Kami yang berbahagia,<br>Ridham & Nurul</p>
     </div>
 
-    <!-- --- JAVASCRIPT SYSTEM --- -->
+    <!-- --- JAVASCRIPT FINAL --- -->
     <script>
-        // 1. Memanggil API Resmi Youtube Player
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        const lagu = document.getElementById('wedding-song');
+        const tombolBuka = document.getElementById('tombolUtama');
+        const tombolMusik = document.getElementById('audioBtn');
 
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '1',
-                width: '1',
-                videoId: 'scZ8uY6zGhk', // ID Video Youtube Instrumen Awadt Alby 
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'scZ8uY6zGhk' // Mengulang lagu terus menerus
-                }
-            });
-        }
-
-        // 2. Mengambil nama tamu dari URL
+        // Nama Tamu
         function getGuestName() {
             const urlParams = new URLSearchParams(window.location.search);
             let nama = urlParams.get('tamu');
             if (!nama) { nama = "Sahabat Terbaik"; }
             return decodeURIComponent(nama);
         }
-
         const namaTamu = getGuestName();
         document.getElementById('tamu-cover').innerText = namaTamu;
         document.getElementById('nama-tamu').innerText = namaTamu;
 
-        // 3. Fungsi Buka Undangan & Paksa Youtube Putar Musik
-        function bukaUndangan() {
-            // Perintah sakti: Paksa Youtube mainkan suaranya lewat sistem internal HP
-            if (player && typeof player.playVideo === 'function') {
-                player.playVideo();
-            }
-
-            // Animasi buka kertas undangan
+        // trik paling ampuh: Ikat fungsi play menggunakan event 'click' murni tanpa bypass animasi delay
+        tombolBuka.addEventListener('click', function() {
+            // HP dipaksa memutar audio secara mutlak
+            lagu.play();
+            
+            // Setelah lagu sukses/dipaksa jalan, baru buka halaman sampulnya
             document.getElementById('cover-page').classList.add('open');
             document.getElementById('main-invitation').classList.add('show');
+            tombolMusik.style.display = 'flex';
+        });
+
+        function toggleMusic() {
+            if (lagu.paused) {
+                lagu.play();
+                tombolMusik.innerText = '🎵';
+            } else {
+                lagu.pause();
+                tombolMusik.innerText = '🔇';
+            }
         }
     </script>
 </body>
