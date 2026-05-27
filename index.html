@@ -96,14 +96,8 @@
             text-transform: uppercase;
         }
 
-        /* Tempat Menyembunyikan Player YouTube (Dibuat Tidak Terlihat) */
-        .youtube-box {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            overflow: hidden;
-            pointer-events: none;
+        .btn-buka:hover {
+            background-color: #b8952d;
         }
 
         /* Tombol Musik Bulat */
@@ -126,7 +120,7 @@
             align-items: center;
         }
 
-        /* Konten Utama */
+        /* Konten Utama Undangan */
         .main-content {
             opacity: 0;
             padding: 60px 20px;
@@ -220,10 +214,10 @@
 </head>
 <body>
 
-    <!-- WADAH EMULASI VIDEO YOUTUBE DARI LINK PILIHAN MAS RIDHAM -->
-    <div class="youtube-box">
-        <div id="yt-player"></div>
-    </div>
+    <!-- 🌟 JALUR MANDIRI: MEMANGGIL FILE MUSIK.MP3 LANGSUNG DARI SERVER GITHUB MAS SENDIRI -->
+    <audio id="wedding-song" loop preload="auto">
+        <source src="musik.mp3" type="audio/mp3">
+    </audio>
 
     <!-- TOMBOL MUSIK BULAT -->
     <button class="music-control" id="audioBtn" onclick="toggleMusic()">🎵</button>
@@ -274,34 +268,11 @@
 
     <!-- --- JAVASCRIPT SYSTEM --- -->
     <script>
+        const lagu = document.getElementById('wedding-song');
         const tombolBuka = document.getElementById('tombolUtama');
         const tombolMusik = document.getElementById('audioBtn');
-        let player;
-        let isPlaying = false;
 
-        // Load API YouTube resmi secara otomatis
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        // Menyiapkan lagu Awadt Alby berdasarkan ID Video YouTube Mas Ridham (52CSnEH9AQE)
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                height: '1',
-                width: '1',
-                videoId: '52CSnEH9AQE', // Mengambil ID dari link mas ridham
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'rel': 0,
-                    'loop': 1,
-                    'playlist': '52CSnEH9AQE' // Mengulang lagu otomatis
-                }
-            });
-        }
-
-        // Sistem Nama Tamu
+        // Nama Tamu Otomatis
         function getGuestName() {
             const urlParams = new URLSearchParams(window.location.search);
             let nama = urlParams.get('tamu');
@@ -312,30 +283,24 @@
         document.getElementById('tamu-cover').innerText = namaTamu;
         document.getElementById('nama-tamu').innerText = namaTamu;
 
-        // Fungsi Buka & Eksekusi Pemutar YouTube
+        // Klik tombol langsung paksa file mp3 berbunyi
         tombolBuka.addEventListener('click', function() {
-            if (player && typeof player.playVideo === 'function') {
-                player.playVideo();
-                isPlaying = true;
-            }
+            lagu.play().catch(error => {
+                console.log("Audio tertahan sistem keamanan browser.");
+            });
             
             document.getElementById('cover-page').classList.add('open');
             document.getElementById('main-invitation').classList.add('show');
             tombolMusik.style.display = 'flex';
         });
 
-        // Kontrol Manual Play/Pause Video YouTube di Pojok
         function toggleMusic() {
-            if (player && typeof player.playVideo === 'function') {
-                if (isPlaying) {
-                    player.pauseVideo();
-                    tombolMusik.innerText = '🔇';
-                    isPlaying = false;
-                } else {
-                    player.playVideo();
-                    tombolMusik.innerText = '🎵';
-                    isPlaying = true;
-                }
+            if (lagu.paused) {
+                lagu.play();
+                tombolMusik.innerText = '🎵';
+            } else {
+                lagu.pause();
+                tombolMusik.innerText = '🔇';
             }
         }
     </script>
