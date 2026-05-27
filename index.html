@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan Ridham & Nurul</title>
+    <style>
+        /* --- STYLE CSS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* Background konten utama menggunakan motif watercolor floral yang sangat lembut */
+            background: linear-gradient(rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.92)), 
+                        url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=600') no-repeat center center/cover;
+            background-attachment: fixed;
+            color: #333;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* Halaman Sampul (Cover) dengan Background Premium & Tajam */
+        .cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            /* Menggunakan gambar potret berkualitas tinggi khusus undangan */
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), 
+                        url('http://googleusercontent.com/image_collection/image_retrieval/16589363179121350632_2') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 999;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            padding: 20px;
+        }
+
+        .cover.open {
+            transform: translateY(-100vh);
+        }
+
+        .cover h2 {
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+            color: #f3e5ab;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+
+        .cover h1 {
+            font-size: 3.2rem;
+            font-family: 'Georgia', serif;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            color: #ffffff;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .cover p {
+            font-size: 1rem;
+            color: #f0f0f0;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+        }
+
+        #tamu-cover {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #f3e5ab;
+            margin-bottom: 40px;
+            font-style: italic;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .btn-buka {
+            padding: 15px 40px;
+            font-size: 1rem;
+            background-color: #d4af37;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            transition: 0.3s;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .btn-buka:hover {
+            background-color: #b8952d;
+            transform: scale(1.05);
+        }
+
+        /* Konten Utama Undangan */
+        .main-content {
+            opacity: 0;
+            padding: 60px 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .main-content.show {
+            opacity: 1;
+        }
+
+        .welcome-msg {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            margin-bottom: 40px;
+            border: 1px solid #ebdcb9;
+        }
+
+        .welcome-msg h3 {
+            color: #b8952d;
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        #nama-tamu {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .pembuka-kata {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            color: #444;
+        }
+
+        .nama-pengantin {
+            font-family: 'Georgia', serif;
+            font-size: 2.4rem;
+            color: #8c6d31;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .dan {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.6rem;
+            color: #888;
+            margin: 5px 0;
+        }
+
+        /* Card Acara */
+        .card-acara {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            margin-top: 25px;
+            border-top: 4px solid #d4af37;
+            text-align: center;
+        }
+
+        .card-acara h3 {
+            color: #8c6d31;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .card-acara p {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .footer-note {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HALAMAN SAMPUL (COVER) -->
+    <div class="cover" id="cover-page">
+        <h2>THE WEDDING OF</h2>
+        <h1>Ridham & Nurul</h1>
+        <p>KEPADA YTH.</p>
+        <p>Bapak/Ibu/Saudara/i : </p>
+        <!-- Nama tamu otomatis berubah di sini -->
+        <h3 id="tamu-cover">Nama Teman</h3>
+        <button class="btn-buka" onclick="bukaUndangan()">Buka Undangan</button>
+    </div>
+
+    <!-- 2. KONTEN UTAMA -->
+    <div class="main-content" id="main-invitation">
+        
+        <!-- Pesan Selamat Datang Custom -->
+        <div class="welcome-msg">
+            <h3>Selamat Datang,</h3>
+            <!-- Nama tamu juga otomatis muncul di sini setelah diklik -->
+            <p id="nama-tamu">Nama Tamu</p>
+        </div>
+
+        <p class="pembuka-kata">
+            Kabar bahagia! Di antara langkah-langkah hidup yang telah kami lalui, kami memutuskan untuk mengukir cerita baru bersama. Kami sangat berharap kehadiran teman-teman di hari bahagia kami:
+        </p>
+            
+        <!-- Nama Pengantin -->
+        <div class="nama-pengantin">Ridham, S.Kom.</div>
+        <div class="dan">&</div>
+        <div class="nama-pengantin">Nurul Apriliani Saadah</div>
+        
+        <hr style="width: 25%; margin: 40px auto; border: 0.5px solid #d4af37;">
+        
+        <!-- Detail Agenda -->
+        <!-- ACARA 1: AKAD -->
+        <div class="card-acara">
+            <h3>AKAD NIKAH</h3>
+            <p><strong>Hari/Tanggal:</strong> Rabu, 3 Juni 2026</p>
+            <p><strong>Waktu:</strong> Bakda Asar</p>
+            <p><strong>Tempat:</strong> Kediaman Mempelai Wanita</p>
+        </div>
+
+        <!-- ACARA 2: NYONGKOLAN -->
+        <div class="card-acara">
+            <h3>NYONGKOLAN</h3>
+            <p><strong>Hari/Tanggal:</strong> Kamis, 4 Juni 2026</p>
+            <p><strong>Waktu:</strong> 13.00 WITA - Selesai</p>
+            <p><strong>Rute/Tempat:</strong> Lokasi Prosesi Nyongkolan</p>
+        </div>
+
+        <p class="footer-note">
+            "Merupakan suatu kebahagiaan dan kehormatan bagi kami, jika teman-teman berkenan hadir dan memberikan doa restu secara langsung."
+        </p>
+        
+        <p style="margin-top: 30px; font-weight: bold; color: #8c6d31; font-size: 1.1rem;">Kami yang berbahagia,<br>Ridham & Nurul</p>
+    </div>
+
+    <!-- --- JAVASCRIPT --- -->
+    <script>
+        // Fungsi membaca nama dari buntut link (?tamu=...)
+        function getGuestName() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let nama = urlParams.get('tamu');
+            
+            if (!nama) {
+                nama = "Sahabat Terbaik"; // Nama cadangan jika link diklik polosan
+            }
+            return decodeURIComponent(nama);
+        }
+
+        // Terapkan nama saat halaman pertama kali dimuat
+        const namaTamu = getGuestName();
+        document.getElementById('tamu-cover').innerText = namaTamu;
+        document.getElementById('nama-tamu').innerText = namaTamu;
+
+        // Fungsi animasi transisi saat tombol "Buka Undangan" diklik
+        function bukaUndangan() {
+            document.getElementById('cover-page').classList.add('open');
+            document.getElementById('main-invitation').classList.add('show');
+        }
+    </script>
+</body>
+</html>
