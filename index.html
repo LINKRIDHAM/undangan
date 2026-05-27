@@ -14,7 +14,6 @@
         }
 
         body {
-            /* Background konten utama menggunakan motif watercolor floral yang sangat lembut */
             background: linear-gradient(rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.92)), 
                         url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=600') no-repeat center center/cover;
             background-attachment: fixed;
@@ -23,14 +22,13 @@
             overflow-x: hidden;
         }
 
-        /* Halaman Sampul (Cover) dengan Background Premium & Tajam */
+        /* Halaman Sampul (Cover) */
         .cover {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            /* Menggunakan gambar potret berkualitas tinggi khusus undangan */
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), 
                         url('http://googleusercontent.com/image_collection/image_retrieval/16589363179121350632_2') no-repeat center center/cover;
             display: flex;
@@ -100,6 +98,27 @@
         .btn-buka:hover {
             background-color: #b8952d;
             transform: scale(1.05);
+        }
+
+        /* Tombol Kontrol Musik Bulat */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(212, 175, 55, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: none; 
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
         }
 
         /* Konten Utama Undangan */
@@ -197,13 +216,20 @@
 </head>
 <body>
 
+    <!-- LINK AUDIO ONLINE DIJAMIN JOSS SAAT DI AKSES ONLINE -->
+    <audio id="wedding-song" loop preload="auto">
+        <source src="https://pub-c5e31b5cdafb419a9d6bf30bc7329dfc.r2.dev/awadt_alby_instrumental.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- TOMBOL KONTROL MUSIK -->
+    <button class="music-control" id="audioBtn" onclick="toggleMusic()">🎵</button>
+
     <!-- 1. HALAMAN SAMPUL (COVER) -->
     <div class="cover" id="cover-page">
         <h2>THE WEDDING OF</h2>
         <h1>Ridham & Nurul</h1>
         <p>KEPADA YTH.</p>
         <p>Bapak/Ibu/Saudara/i : </p>
-        <!-- Nama tamu otomatis berubah di sini -->
         <h3 id="tamu-cover">Nama Teman</h3>
         <button class="btn-buka" onclick="bukaUndangan()">Buka Undangan</button>
     </div>
@@ -211,10 +237,8 @@
     <!-- 2. KONTEN UTAMA -->
     <div class="main-content" id="main-invitation">
         
-        <!-- Pesan Selamat Datang Custom -->
         <div class="welcome-msg">
             <h3>Selamat Datang,</h3>
-            <!-- Nama tamu juga otomatis muncul di sini setelah diklik -->
             <p id="nama-tamu">Nama Tamu</p>
         </div>
 
@@ -222,15 +246,12 @@
             Kabar bahagia! Di antara langkah-langkah hidup yang telah kami lalui, kami memutuskan untuk mengukir cerita baru bersama. Kami sangat berharap kehadiran teman-teman di hari bahagia kami:
         </p>
             
-        <!-- Nama Pengantin -->
         <div class="nama-pengantin">Ridham, S.Kom.</div>
         <div class="dan">&</div>
         <div class="nama-pengantin">Nurul Apriliani Saadah</div>
         
         <hr style="width: 25%; margin: 40px auto; border: 0.5px solid #d4af37;">
         
-        <!-- Detail Agenda -->
-        <!-- ACARA 1: AKAD -->
         <div class="card-acara">
             <h3>AKAD NIKAH</h3>
             <p><strong>Hari/Tanggal:</strong> Rabu, 3 Juni 2026</p>
@@ -238,7 +259,6 @@
             <p><strong>Tempat:</strong> Loang Lindung, Desa Suwangi Timur, Kec Sakra</p>
         </div>
 
-        <!-- ACARA 2: NYONGKOLAN -->
         <div class="card-acara">
             <h3>NYONGKOLAN</h3>
             <p><strong>Hari/Tanggal:</strong> Kamis, 4 Juni 2026</p>
@@ -255,26 +275,42 @@
 
     <!-- --- JAVASCRIPT --- -->
     <script>
-        // Fungsi membaca nama dari buntut link (?tamu=...)
+        const lagu = document.getElementById('wedding-song');
+        const tombolMusik = document.getElementById('audioBtn');
+
         function getGuestName() {
             const urlParams = new URLSearchParams(window.location.search);
             let nama = urlParams.get('tamu');
             
             if (!nama) {
-                nama = "Sahabat Terbaik"; // Nama cadangan jika link diklik polosan
+                nama = "Sahabat Terbaik"; 
             }
             return decodeURIComponent(nama);
         }
 
-        // Terapkan nama saat halaman pertama kali dimuat
         const namaTamu = getGuestName();
         document.getElementById('tamu-cover').innerText = namaTamu;
         document.getElementById('nama-tamu').innerText = namaTamu;
 
-        // Fungsi animasi transisi saat tombol "Buka Undangan" diklik
         function bukaUndangan() {
+            // Musik langsung diputar instan tanpa jeda begitu tombol disentuh
+            lagu.play().catch(error => {
+                console.log("Audio otomatis ditahan browser sebelum interaksi selesai.");
+            });
+
             document.getElementById('cover-page').classList.add('open');
             document.getElementById('main-invitation').classList.add('show');
+            tombolMusik.style.display = 'flex';
+        }
+
+        function toggleMusic() {
+            if (lagu.paused) {
+                lagu.play();
+                tombolMusik.innerText = '🎵';
+            } else {
+                lagu.pause();
+                tombolMusik.innerText = '🔇';
+            }
         }
     </script>
 </body>
