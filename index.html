@@ -43,6 +43,7 @@
 
         .cover.open {
             transform: translateY(-100vh);
+            pointer-events: none;
         }
 
         .cover h2 {
@@ -100,25 +101,13 @@
             transform: scale(1.05);
         }
 
-        /* Tombol Kontrol Musik Bulat */
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(212, 175, 55, 0.9);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            display: none; 
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            transition: 0.3s;
+        /* Bingkai Youtube Tersembunyi (Agar Hanya Suaranya yang Terdengar) */
+        .youtube-audio {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* Konten Utama Undangan */
@@ -216,13 +205,10 @@
 </head>
 <body>
 
-    <!-- LINK AUDIO ONLINE DIJAMIN JOSS SAAT DI AKSES ONLINE -->
-    <audio id="wedding-song" loop preload="auto">
-        <source src="https://pub-c5e31b5cdafb419a9d6bf30bc7329dfc.r2.dev/awadt_alby_instrumental.mp3" type="audio/mp3">
-    </audio>
-
-    <!-- TOMBOL KONTROL MUSIK -->
-    <button class="music-control" id="audioBtn" onclick="toggleMusic()">🎵</button>
+    <!-- JALUR ANTI-GAGAL: PLAYER YOUTUBE AWADT ALBY YANG DISEMBUNYIKAN -->
+    <div class="youtube-audio">
+        <div id="player"></div>
+    </div>
 
     <!-- 1. HALAMAN SAMPUL (COVER) -->
     <div class="cover" id="cover-page">
@@ -273,18 +259,34 @@
         <p style="margin-top: 30px; font-weight: bold; color: #8c6d31; font-size: 1.1rem;">Kami yang berbahagia,<br>Ridham & Nurul</p>
     </div>
 
-    <!-- --- JAVASCRIPT --- -->
+    <!-- --- JAVASCRIPT SYSTEM --- -->
     <script>
-        const lagu = document.getElementById('wedding-song');
-        const tombolMusik = document.getElementById('audioBtn');
+        // 1. Memanggil API Resmi Youtube Player
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '1',
+                width: '1',
+                videoId: 'scZ8uY6zGhk', // ID Video Youtube Instrumen Awadt Alby 
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'scZ8uY6zGhk' // Mengulang lagu terus menerus
+                }
+            });
+        }
+
+        // 2. Mengambil nama tamu dari URL
         function getGuestName() {
             const urlParams = new URLSearchParams(window.location.search);
             let nama = urlParams.get('tamu');
-            
-            if (!nama) {
-                nama = "Sahabat Terbaik"; 
-            }
+            if (!nama) { nama = "Sahabat Terbaik"; }
             return decodeURIComponent(nama);
         }
 
@@ -292,25 +294,16 @@
         document.getElementById('tamu-cover').innerText = namaTamu;
         document.getElementById('nama-tamu').innerText = namaTamu;
 
+        // 3. Fungsi Buka Undangan & Paksa Youtube Putar Musik
         function bukaUndangan() {
-            // Musik langsung diputar instan tanpa jeda begitu tombol disentuh
-            lagu.play().catch(error => {
-                console.log("Audio otomatis ditahan browser sebelum interaksi selesai.");
-            });
+            // Perintah sakti: Paksa Youtube mainkan suaranya lewat sistem internal HP
+            if (player && typeof player.playVideo === 'function') {
+                player.playVideo();
+            }
 
+            // Animasi buka kertas undangan
             document.getElementById('cover-page').classList.add('open');
             document.getElementById('main-invitation').classList.add('show');
-            tombolMusik.style.display = 'flex';
-        }
-
-        function toggleMusic() {
-            if (lagu.paused) {
-                lagu.play();
-                tombolMusik.innerText = '🎵';
-            } else {
-                lagu.pause();
-                tombolMusik.innerText = '🔇';
-            }
         }
     </script>
 </body>
