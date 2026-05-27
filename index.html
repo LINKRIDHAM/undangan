@@ -214,10 +214,9 @@
 </head>
 <body>
 
-    <!-- SERVER UTAMA: LINK AUDIO DRIECT STREAMING VIA HTTPS RESMI -->
+    <!-- LINK INSTRUMEN MUSIK PREMIUM YANG SUDAH TERBUKTI AKTIF & JOSS -->
     <audio id="wedding-song" loop preload="auto">
-       <!-- MENJADI SEPERTI INI -->
-<source src="https://www.w3schools.com/html/horse.mp3" type="audio/mp3">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-84.wav" type="audio/wav">
     </audio>
 
     <!-- TOMBOL MUSIK BULAT -->
@@ -230,7 +229,6 @@
         <p>KEPADA YTH.</p>
         <p>Bapak/Ibu/Saudara/i : </p>
         <h3 id="tamu-cover">Nama Teman</h3>
-        <!-- INTERAKSI LANGSUNG SANGAT KUAT -->
         <button class="btn-buka" id="tombolUtama">Buka Undangan</button>
     </div>
 
@@ -247,31 +245,34 @@
         <div class="dan">&</div>
         <div class="nama-pengantin">Nurul Apriliani Saadah</div>
         <hr style="width: 25%; margin: 40px auto; border: 0.5px solid #d4af37;">
+        
         <div class="card-acara">
             <h3>AKAD NIKAH</h3>
             <p><strong>Hari/Tanggal:</strong> Rabu, 3 Juni 2026</p>
             <p><strong>Waktu:</strong> Bakda Asar</p>
             <p><strong>Tempat:</strong> Loang Lindung, Desa Suwangi Timur, Kec Sakra</p>
         </div>
+        
         <div class="card-acara">
             <h3>NYONGKOLAN</h3>
             <p><strong>Hari/Tanggal:</strong> Kamis, 4 Juni 2026</p>
             <p><strong>Waktu:</strong> 16.00 WITA - Selesai</p>
             <p><strong>Rute/Tempat:</strong> Loang Lindung ke Gunung Bagek</p>
         </div>
+        
         <p class="footer-note">
             "Merupakan suatu kebahagiaan dan kehormatan bagi kami, jika Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu secara langsung."
         </p>
         <p style="margin-top: 30px; font-weight: bold; color: #8c6d31; font-size: 1.1rem;">Kami yang berbahagia,<br>Ridham & Nurul</p>
     </div>
 
-    <!-- --- JAVASCRIPT FINAL --- -->
+    <!-- --- JAVASCRIPT SYSTEM --- -->
     <script>
         const lagu = document.getElementById('wedding-song');
         const tombolBuka = document.getElementById('tombolUtama');
         const tombolMusik = document.getElementById('audioBtn');
 
-        // Nama Tamu
+        // Nama Tamu Otomatis
         function getGuestName() {
             const urlParams = new URLSearchParams(window.location.search);
             let nama = urlParams.get('tamu');
@@ -282,12 +283,14 @@
         document.getElementById('tamu-cover').innerText = namaTamu;
         document.getElementById('nama-tamu').innerText = namaTamu;
 
-        // trik paling ampuh: Ikat fungsi play menggunakan event 'click' murni tanpa bypass animasi delay
+        // Fungsi Sakti: Klik Langsung Bunyi Tanpa Hambatan
         tombolBuka.addEventListener('click', function() {
-            // HP dipaksa memutar audio secara mutlak
-            lagu.play();
+            // Jalankan musik di milidetik pertama klik fisik
+            lagu.play().catch(error => {
+                console.log("Pemutaran musik tertahan sistem browser.");
+            });
             
-            // Setelah lagu sukses/dipaksa jalan, baru buka halaman sampulnya
+            // Jalankan animasi buka undangan
             document.getElementById('cover-page').classList.add('open');
             document.getElementById('main-invitation').classList.add('show');
             tombolMusik.style.display = 'flex';
