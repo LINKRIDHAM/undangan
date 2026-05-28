@@ -179,28 +179,59 @@
             margin: 5px 0;
         }
 
+        /* Card Acara Baru */
         .card-acara {
             background: rgba(255, 255, 255, 0.95);
-            padding: 30px 25px;
+            padding: 30px 22px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             margin-top: 25px;
             border-top: 4px solid #d4af37;
-            text-align: center;
         }
 
         .card-acara h3 {
             color: #8c6d31;
             font-size: 1.2rem;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             letter-spacing: 2px;
         }
 
-        .card-acara p {
-            margin-bottom: 8px;
+        /* CSS Tabel Khusus Penyelaras Titik Dua (:) */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
             font-size: 0.95rem;
             color: #444;
+        }
+
+        .info-table td {
+            padding: 8px 0;
+            vertical-align: top;
+        }
+
+        /* Kolom Ikon & Label */
+        .info-table .label-kolom {
+            width: 32%;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Jarak antara ikon dan teks */
+        }
+
+        /* Kolom Titik Dua */
+        .info-table .titik-dua {
+            width: 5%;
+            text-align: center;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        /* Kolom Isi Keterangan */
+        .info-table .isi-kolom {
+            width: 63%;
             line-height: 1.5;
+            padding-left: 5px;
         }
 
         .footer-note {
@@ -214,7 +245,7 @@
 </head>
 <body>
 
-    <!-- NAMA FILE LAGU SUDAH DISESUAIKAN PERSIS DENGAN ASLINYA -->
+    <!-- PANGGILAN LAGU ASLI MAS RIDHAM -->
     <audio id="wedding-song" loop preload="auto">
         <source src="Dergaly - Awadt Alby (Official Lyric Video) _ درجالي - عوضت قلبي (ومعاك أنا بحسب الايام دي بالثانيه).mp3" type="audio/mp3">
     </audio>
@@ -241,23 +272,55 @@
         <p class="pembuka-kata">
             Kabar bahagia! Di antara langkah-langkah hidup yang telah kami lalui, kami memutuskan untuk mengukir cerita baru bersama. Kami sangat berharap kehadiran teman-teman di hari bahagia kami:
         </p>
-        <div class="nama-pengantin">Ridham</div>
+        
+        <div class="nama-pengantin">Ridham, S.Kom.</div>
         <div class="dan">&</div>
-        <div class="nama-pengantin">Nurul Apriliani Sa'adah</div>
+        <div class="nama-pengantin">Nurul Apriliani Saadah</div>
+        
         <hr style="width: 25%; margin: 40px auto; border: 0.5px solid #d4af37;">
         
+        <!-- CARD AKAD NIKAH DENGAN IKON & STRUKTUR RAPI -->
         <div class="card-acara">
             <h3>AKAD NIKAH</h3>
-            <p><strong>Hari/Tanggal:</strong> Rabu, 3 Juni 2026</p>
-            <p><strong>Waktu:</strong> Bakda Asar</p>
-            <p><strong>Tempat:</strong> Loang Lindung, Desa Suwangi Timur, Kec Sakra</p>
+            <table class="info-table">
+                <tr>
+                    <td class="label-kolom"><span>📅</span> Hari/Tgl</td>
+                    <td class="titik-dua">:</td>
+                    <td class="isi-kolom">Rabu, 3 Juni 2026</td>
+                </tr>
+                <tr>
+                    <td class="label-kolom"><span>⏰</span> Waktu</td>
+                    <td class="titik-dua">:</td>
+                    <td class="isi-kolom">Bakda Asar</td>
+                </tr>
+                <tr>
+                    <td class="label-kolom"><span>📍</span> Tempat</td>
+                    <td class="titik-dua">:</td>
+                    <td class="isi-kolom">Loang Lindung, Desa Suwangi Timur, Kec Sakra</td>
+                </tr>
+            </table>
         </div>
         
+        <!-- CARD NYONGKOLAN DENGAN IKON & STRUKTUR RAPI -->
         <div class="card-acara">
             <h3>NYONGKOLAN</h3>
-            <p><strong>Hari/Tanggal:</strong> Kamis, 4 Juni 2026</p>
-            <p><strong>Waktu:</strong> 16.00 WITA - Selesai</p>
-            <p><strong>Rute/Tempat:</strong> Loang Lindung ke Gunung Bagek</p>
+            <table class="info-table">
+                <tr>
+                    <td class="label-kolom"><span>📅</span> Hari/Tgl</td>
+                    <td class="titik-dua">:</td>
+                    <td class="isi-kolom">Kamis, 4 Juni 2026</td>
+                </tr>
+                <tr>
+                    <td class="label-kolom"><span>⏰</span> Waktu</td>
+                    <td class="titik-dua">:</td>
+                    <td class="isi-kolom">16.00 WITA - Selesai</td>
+                </tr>
+                <tr>
+                    <td class="label-kolom"><span>🗺️</span> Rute</td>
+                    <td class="titik-dua">:</td>
+                    <td class="isi-kolom">Loang Lindung ke Gunung Bagek</td>
+                </tr>
+            </table>
         </div>
         
         <p class="footer-note">
@@ -283,7 +346,7 @@
         document.getElementById('tamu-cover').innerText = namaTamu;
         document.getElementById('nama-tamu').innerText = namaTamu;
 
-        // Klik tombol langsung paksa file mp3 berbunyi
+        // Sistem Aktivasi Audio Lokal / Server
         tombolBuka.addEventListener('click', function() {
             lagu.play().catch(error => {
                 console.log("Audio tertahan sistem keamanan browser.");
